@@ -5,11 +5,10 @@ const router = express.Router();
 
 // gets all teams from user
 // TODO check if session.user_id works 
-router.get("/", async (req,res) => {
+router.get("/:user", async (req,res) => {
   try {
     Team.findAll(
-      // add this line when deployed
-      //{where: {user_id: req.session.user_id}}
+        {where: {user_id: req.params.user}}
       ).then((data) => {
       res.status(200).json(data);
     });
@@ -18,16 +17,6 @@ router.get("/", async (req,res) => {
   }
 });
 
-// lets you look at a team with a certain id 
-router.get("/:team", async (req, res) => {
-  try {
-    Team.findByPk(req.params.team).then((result) => {
-      res.status(200).json(result);
-    })
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 
 router.post("/user", async (req,res) => {
